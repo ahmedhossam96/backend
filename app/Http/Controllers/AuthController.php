@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use App\User;
 
 
@@ -40,11 +41,16 @@ class AuthController extends Controller
      public function login(Request $request)
     {
     
-      $credentials = $request->json()->only(['email'] ,['password']);
+      $array = $request->json()->all();
 
+      
+
+
+
+     $credentials = Arr::only($array, ['email', 'password']);
      
   
-      print_r($credentials);
+      //print_r($credentials);
 
 
      if (!$token = auth()->attempt($credentials)) {
