@@ -13,7 +13,19 @@ class Makeyourshop extends Controller
 
     public function register(Request $request)
     {
-     // $guard = "shops";
+
+      $shop = $request->json()->all();
+ 
+      $shop = Shop::create([
+
+        'name' => $shop['name'],
+        'email' => $shop['email'],
+        'password' => bcrypt($shop['password']),
+       
+      ]);
+         
+     
+  /*
       $shop = Shop::create([
         'name' => $request->name,
         'fname' => $request->fname,
@@ -30,18 +42,24 @@ class Makeyourshop extends Controller
         'password' => bcrypt($request->password),
       ]);
 
-      $token =auth()->login($shop);
-      
+*/
+      $token = auth()->login($shop);
+
       return $this->respondWithToken($token);
+     
     }
 
     public function login(Request $request)
     {
-      $credentials = $request->only(['email', 'password']);
+      $array = $request->json()->all();
 
-      if (!$token = auth()->attempt($credentials)) {
-        return response()->json(['error' => 'Unauthorized'], 401);
-      }
+
+     $credentials = Arr::only($array, ['email', 'password']);
+     
+
+     if (!$token = auth()->attempt($credentials)) {
+      return response()->json(['error' => 'false'], 401);
+    }
 
       return $this->respondWithToken($token);
     }
@@ -59,7 +77,6 @@ class Makeyourshop extends Controller
       return response()->json([
         'access_token' => $token,
         'token_type' => 'bearer',
-       // 'expires_in' => auth()->factory()->getTTL() * 60
         'expires_in' => auth('api')->factory()->getTTL() * 60
       ]);
     }

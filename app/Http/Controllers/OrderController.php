@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Order;
-use App\Client;
-use App\User;
-use App\Detail;
+
+use App\User;   
 use App\Product;
 use App\paymentMethod;
 use App\Http\Requests\OrderRequest;
@@ -33,9 +32,7 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-     /*   return  view('admin.order.index', [
-            'orders' => $this->orderRepository->paginate($request)
-        ]); */
+  
     
 $myObj = $request;
 
@@ -58,28 +55,7 @@ return $myJSON;
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create()
-    {
-        /*
-        return view('admin.order.create', [
-            'orders' => Order::all(),
-            'products' => Product::all(),
-            'clients' => Client::all(),
-            'users'=> User::all(),
-            'payments'=>paymentMethod::all()
-
-        ]);
-        */
-
-        $dumm = Order::all();
-        $mim=  Product::all();
-        $sim=Client::all();
-        $cats=  User::all();
-        $dum=paymentMethod::all();
-
-        return json($dumm,$mim,$sim,$cats,$dum);
-
-    }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -99,8 +75,8 @@ return $myJSON;
         $order->save();
 
 
-        return json($order);
-      //  return redirect(route('admin.orders.show', $order));
+        return 1;;
+     
     }
 
     /**
@@ -109,20 +85,7 @@ return $myJSON;
      * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $order)
-    {
-       // foreach ($order->products as $product) {
-       //     $product->pivot->price;
-      //  }
-      //  dd($order->products->count());
-      /*
-      $order->load('products');
-      return view('admin.order.show', [
-          'order'=> $order
-      ]); */
-      echo $order;
-      return $order;
-    }
+    
 
     /**
      * Show the form for editing the specified resource.
@@ -148,47 +111,16 @@ return $myJSON;
         $cats=  User::all();
         $dum=paymentMethod::all();
 
-        return json($order,$dumm,$mim,$sim,$cats,$dum);
+        return 1;
+        
+        //json($order,$dumm,$mim,$sim,$cats,$dum);
 
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Order $order)
-    {
-        $request->merge([
-            'user_id' => $request->user()->id
-        ]);
-        $order->update($request->all());
-        $products=$request->get('products');
-        $totalamount=0;
-        foreach($products as $product){
-            $quantity=$product['quantity'];
-            $price=$product['price'];
-            $total= $quantity * $price;
-            $totalamount +=$total;
-        }
-        $order->total_amount =$totalamount;
-        $order->save();
-        $order->products()->sync($request->get('products'));
-        $order->save();
-         
-        return json($order);
-       // return redirect(route('admin.orders.show', $order));
-    }
+    
+    
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Order  $order
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Order $order)
     {
         $order->delete();

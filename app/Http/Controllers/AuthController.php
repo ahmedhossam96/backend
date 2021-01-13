@@ -43,15 +43,9 @@ class AuthController extends Controller
     
       $array = $request->json()->all();
 
-      
-
-
 
      $credentials = Arr::only($array, ['email', 'password']);
      
-  
-      //print_r($credentials);
-
 
      if (!$token = auth()->attempt($credentials)) {
       return response()->json(['error' => 'false'], 401);
