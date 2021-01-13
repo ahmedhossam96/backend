@@ -18,7 +18,7 @@ class Makeyourshop extends Controller
  
       $shop = Shop::create([
 
-        'name' => $shop['name'],
+       // 'name' => $shop['name'],
         'email' => $shop['email'],
         'password' => bcrypt($shop['password']),
        
